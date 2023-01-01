@@ -175,9 +175,7 @@
           "leading_diamond": " \ue0b6",
           "template": " \uE7B2 {{.Project}} ",
           "properties": {
-            "include_folders": [
-              "~/WorkSpace/CLC/cloud-locker-serverless.*"
-            ]
+            "include_folders": ["~/WorkSpace/CLC/cloud-locker-serverless.*"]
           }
         },
         {
@@ -191,7 +189,7 @@
             "{{ if regexMatch \"(^(1[8-9])|(2[0-3])):\" (.CurrentDate | date .Format) }}p:c-date-time-evening{{ end }}",
             "{{ if regexMatch \"^(0[0-5]):\" (.CurrentDate | date .Format) }}p:c-date-time-night{{ end }}"
           ],
-          "foreground": "p:c-badge-white",
+          "foreground": "p:c-badge-text",
           "trailing_diamond": "\ue0b4",
           "leading_diamond": " \ue0b6",
           "properties": {
