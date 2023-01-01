@@ -149,6 +149,18 @@
       "type": "prompt",
       "segments": [
         {
+          "background": "p:c-project-gcp",
+          "foreground": "p:c-badge-text",
+          "leading_diamond": " \ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "style": "diamond",
+          "template": " \ue7b2 {{ .Project }} ",
+          "type": "gcp",
+          "properties": {
+            "include_folders": ["~/Workspace/CLC/cloud-locker-serverless.*"]
+          }
+        },
+        {
           "type": "node",
           "style": "diamond",
           "background": "p:c-project-node",
