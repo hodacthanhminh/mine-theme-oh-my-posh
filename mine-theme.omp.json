@@ -2,115 +2,119 @@
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
   "version": 2,
   "final_space": true,
+  "palette": {
+    "c-badge-folder": "#FFD770",
+    "c-badge-text": "#212121",
+    "c-badge-white": "#FAFAFA",
+    "c-badge-return-custom": "#E7B9FF",
+    "c-badge-return-fail-term": "#FF8A80",
+    "c-badge-return-success": "#B2FF59",
+    "c-badge-blue": "#8795dd",
+    "c-day-mon": "#CCFF90",
+    "c-day-tue": "#B9F6CA",
+    "c-day-wed": "#FFE57F",
+    "c-day-thu": "#FFD180",
+    "c-day-fri": "#FF8A80",
+    "c-day-sat": "#F4FF81",
+    "c-day-sun": "#FFFF8D",
+    "c-battery-state-error": "#FF867F",
+    "c-date-time-morning": "#FFFF8D",
+    "c-date-time-noon": "#FFF64F",
+    "c-date-time-afternoon": "#FFC400",
+    "c-date-time-evening": "#C0CFFF",
+    "c-date-time-night": "#83B9FF",
+    "c-exec-fast": "#C6FF00",
+    "c-exec-normal": "#FFFF00",
+    "c-exec-slow": "#FFD180",
+    "c-exec-slower": "#FF867F",
+    "c-git-ahead": "#6EFFFF",
+    "c-git-behind": "#FFA06D",
+    "c-git-ahead-behind": "#C0CFFF",
+    "c-git-normal": "#66FFA6",
+    "c-git-staging": "#FFD740",
+    "c-git-staging-working": "#FFB2FF",
+    "c-git-upstream-gone": "#FF867F",
+    "c-git-working": "#84FFFF",
+    "c-project-generic-error": "#FF867F",
+    "c-project-crystal": "#FFFFFF",
+    "c-project-flutter": "#6DC2FF",
+    "c-project-lua": "#BBC2FF",
+    "c-project-node": "#9CFF57",
+    "c-project-rust": "#FFAB40",
+    "c-project-python": "#FFE873",
+    "c-project-gcp": "#4285F4",
+    "c-secondary-ellipsis": "#FFFF8D"
+  },
+  "console_title_template": "{{ .Folder }}",
   "blocks": [
     {
       "type": "prompt",
       "alignment": "left",
+      "newline": true,
       "segments": [
         {
-          "background": "#0077c2",
-          "foreground": "#ffffff",
-          "leading_diamond": "\u256d\u2500\ue0b6",
-          "trailing_diamond": "\ue0b0",
+          "type": "time",
           "style": "diamond",
-          "template": " \ue795 {{ .Name }} ",
-          "type": "shell",
+          "foreground": "p:c-badge-text",
+          "trailing_diamond": "<transparent,background>\ue0b2</>",
+          "leading_diamond": "\ue0b2",
+          "template": " \ueab0 {{ .CurrentDate | date .Format }} ",
+          "background_templates": [
+            "{{ if regexMatch \"(^Mon)\" (.CurrentDate | date .Format) }}p:c-day-mon{{ end }}",
+            "{{ if regexMatch \"(^Tue)\" (.CurrentDate | date .Format) }}p:c-day-tue{{ end }}",
+            "{{ if regexMatch \"(^Wed)\" (.CurrentDate | date .Format) }}p:c-day-wed{{ end }}",
+            "{{ if regexMatch \"(^Thu)\" (.CurrentDate | date .Format) }}p:c-day-thu{{ end }}",
+            "{{ if regexMatch \"(^Fri)\" (.CurrentDate | date .Format) }}p:c-day-fri{{ end }}",
+            "{{ if regexMatch \"(^Sat)\" (.CurrentDate | date .Format) }}p:c-day-sat{{ end }}",
+            "{{ if regexMatch \"(^Sun)\" (.CurrentDate | date .Format) }}p:c-day-sun{{ end }}"
+          ],
           "properties": {
-            "mapped_shell_names": {
-              "pwsh": "Shell",
-              "powershell": "Shell",
-              "cmd": "Cmd",
-              "bash": "Bash"
-            }
-          }
+            "time_format": "Mon, 02 Jan 2006"
+          },
+          "templates_logic": "join"
         },
         {
-          "background": "#516BEB",
-          "foreground": "#ffffff",
-          "leading_diamond": "<transparent,background>\ue0b0</>",
+          "background": "p:c-badge-blue",
+          "foreground": "p:c-badge-text",
+          "leading_diamond": "\ue0b2",
           "style": "diamond",
           "template": " \uf85a CPU: {{ round .PhysicalPercentUsed .Precision }}% | ",
           "type": "sysinfo"
         },
         {
-          "background": "#516BEB",
-          "foreground": "#ffffff",
+          "background": "p:c-badge-blue",
+          "foreground": "p:c-badge-text",
           "style": "diamond",
-          "template": "MEM: {{ (div ((sub .PhysicalTotalMemory .PhysicalFreeMemory)|float64) 1000000000.0) }}/{{ (div .PhysicalTotalMemory 1000000000.0) }}GB ",
+          "template": "RAM: {{ (div ((sub .PhysicalTotalMemory .PhysicalFreeMemory)|float64) 1000000000.0) }}/{{ (div .PhysicalTotalMemory 1000000000.0) }}GB ",
           "trailing_diamond": "\ue0b0",
-          "type": "sysinfo"
+          "type": "sysinfo",
+          "templates_logic": "join"
         },
         {
-          "type": "git",
-          "style": "powerline",
+          "background": "p:c-git-normal",
           "powerline_symbol": "\uE0B0",
-          "foreground": "#141613",
-          "foreground_templates": [
-            "{{ if or (.Working.Changed) (.Staging.Changed) }}#193549{{ end }}",
-            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#193549{{ end }}",
-            "{{ if gt .Ahead 0 }}#193549{{ end }}",
-            "{{ if gt .Behind 0 }}#193549{{ end }}"
-          ],
-          "background": "#cfe4c3",
           "background_templates": [
-            "{{ if or (.Working.Changed) (.Staging.Changed) }}#FFEB3B{{ end }}",
-            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#FFCC80{{ end }}",
-            "{{ if gt .Ahead 0 }}#B388FF{{ end }}",
-            "{{ if gt .Behind 0 }}#B388FB{{ end }}"
+            "{{ if gt .Ahead 0 }}p:c-git-ahead{{ end }}",
+            "{{ if gt .Behind 0 }}p:c-git-behind{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:c-git-ahead-behind{{ end }}",
+            "{{ if and (not .Working.Changed) (.Staging.Changed) }}p:c-git-staging{{ end }}",
+            "{{ if and (.Working.Changed) (.Staging.Changed) }}p:c-git-staging-working{{ end }}",
+            "{{ if .UpstreamGone }}p:c-git-upstream-gone{{ end }}",
+            "{{ if and (.Working.Changed) (not .Staging.Changed) }}p:c-git-working{{ end }}"
           ],
-          "template": "{{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uF044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uF046 {{ .Staging.String }}{{ end }}",
+          "foreground": "p:c-badge-text",
+          "style": "powerline",
+          "template": " {{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} \uE0B1 \uF448 ({{ .Working.String }}){{ end }}{{ if and .Working.Changed .Staging.Changed }} \uE621 {{ end }}{{ if .Staging.Changed }}{{ if not .Working.Changed }} \uE0B1 {{ end }}\uF854 ({{ .Staging.String }}){{ end }} ",
           "properties": {
-            "branch_icon": " \ue725 ",
+            "branch_icon": "\uE0A0 ",
+            "branch_ahead_icon": " \uE621 \uF9AC ",
+            "branch_behind_icon": " \uE621 \uF9AD ",
+            "branch_gone_icon": " \uE621 \uF00D",
+            "branch_identical_icon": " \uE621 \uF00C",
             "fetch_status": true,
-            "fetch_stash_count": true,
-            "fetch_upstream_icon": true,
-            "untracked_modes": {
-              "/Users/user/Projects/oh-my-posh/": "no"
-            }
-          }
-        },
-        {
-          "type": "time",
-          "style": "diamond",
-          "foreground": "#ffffff",
-          "background": "#ff79c6",
-          "trailing_diamond": "\ue0b4",
-          "leading_diamond": "<transparent,background>\ue0b0</>",
-          "template": " \ue21d  {{ .CurrentDate | date .Format }} ",
-          "background_templates": [
-            "{{ if and .CurrentDate | date \"Fri\" }}#cccccc{{ end }}"
-          ],
-          "properties": {
-            "time_format": "Mon 15:05"
-          }
-        }
-      ]
-    },
-    {
-      "type": "prompt",
-      "alignment": "right",
-      "segments": [
-        {
-          "type": "node",
-          "style": "plain",
-          "powerline_symbol": "\ue0b0",
-          "foreground": "#6cc24a",
-          "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
-          "properties": {
-            "fetch_package_manager": true
-          }
-        },
-        {
-          "type": "executiontime",
-          "style": "powerline",
-          "powerline_symbol": "\uE0B0",
-          "foreground": "#ffffff",
-          "background": "#dd0000",
-          "template": " <#fefefe>\ufbab</> {{ .FormattedMs }} ",
-          "properties": {
-            "threshold": 500,
-            "style": "austin"
-          }
+            "fetch_stash_count": true
+          },
+          "type": "git"
         }
       ]
     },
@@ -121,12 +125,12 @@
         {
           "foreground": "#0077c2",
           "style": "plain",
-          "template": "\u2570\u2500",
+          "template": "\u256d\u2500",
           "type": "text"
         },
         {
           "background": "transparent",
-          "foreground": "p:white",
+          "foreground": "p:c-badge-white",
           "properties": {
             "folder_icon": "\uf07b",
             "folder_separator_template": "<#93d0ff> \u00bb </>",
@@ -134,12 +138,92 @@
             "style": "agnoster_full"
           },
           "style": "plain",
-          "template": "<p:white></><#93d0ff>[</> {{.Path}} <#93d0ff>]</>",
+          "template": "<p:c-badge-white></><#93d0ff>[</> {{.Path}} <#93d0ff>]</>",
           "type": "path"
         },
         {
+          "type": "node",
+          "style": "diamond",
+          "foreground": "p:c-project-node",
+          "template": "<#93d0ff>[</> \ue718 {{ .Full }} <#93d0ff>]</>",
+          "properties": {
+            "fetch_package_manager": true
+          }
+        },
+        {
+          "foreground": "p:c-project-python",
+          "properties": {
+            "display_mode": "context"
+          },
+          "style": "diamond",
+          "template": "<#93d0ff>[</> \uE235  {{ .Full }} <#93d0ff>]</>",
+          "type": "python"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "type": "prompt",
+      "segments": [
+        {
+          "type": "gcp",
+          "style": "diamond",
+          "background": "p:c-project-gcp",
+          "foreground": "p:c-badge-white",
+          "trailing_diamond": "\ue0b4",
+          "leading_diamond": " \ue0b6",
+          "template": " \uE7B2 {{.Project}} ",
+          "properties": {
+            "include_folders": [
+              "~/WorkSpace/CLC/cloud-locker-serverless.*"
+            ]
+          }
+        },
+        {
+          "type": "time",
+          "style": "diamond",
+          "background": "p:c-project-gcp",
+          "background_templates": [
+            "{{ if regexMatch \"(^(0[6-9])|(1[0-1])):\" (.CurrentDate | date .Format) }}p:c-date-time-morning{{ end }}",
+            "{{ if regexMatch (\"(^1[2-4]):\") (.CurrentDate | date .Format) }}p:c-date-time-noon{{ end }}",
+            "{{ if regexMatch (\"(^1[5-7]):\") (.CurrentDate | date .Format) }}p:c-date-time-afternoon{{ end }}",
+            "{{ if regexMatch \"(^(1[8-9])|(2[0-3])):\" (.CurrentDate | date .Format) }}p:c-date-time-evening{{ end }}",
+            "{{ if regexMatch \"^(0[0-5]):\" (.CurrentDate | date .Format) }}p:c-date-time-night{{ end }}"
+          ],
+          "foreground": "p:c-badge-white",
+          "trailing_diamond": "\ue0b4",
+          "leading_diamond": " \ue0b6",
+          "properties": {
+            "time_format": "15:04:05"
+          },
+          "template": "{{ if regexMatch \"(^00|12):\" (.CurrentDate | date .Format) }}\ue381 {{ end }}{{ if regexMatch \"(^01|13):\" (.CurrentDate | date .Format) }}\ue382 {{ end }}{{ if regexMatch \"(^02|14):\" (.CurrentDate | date .Format) }}\ue383 {{ end }}{{ if regexMatch \"(^03|15):\" (.CurrentDate | date .Format) }}\ue384 {{ end }}{{ if regexMatch \"(^04|16):\" (.CurrentDate | date .Format) }}\ue385 {{ end }}{{ if regexMatch \"(^05|17):\" (.CurrentDate | date .Format) }}\ue386 {{ end }}{{ if regexMatch \"(^06|18):\" (.CurrentDate | date .Format) }}\ue387 {{ end }}{{ if regexMatch \"(^07|19):\" (.CurrentDate | date .Format) }}\ue388 {{ end }}{{ if regexMatch \"(^08|20):\" (.CurrentDate | date .Format) }}\ue389 {{ end }}{{ if regexMatch \"(^09|21):\" (.CurrentDate | date .Format) }}\ue38a {{ end }}{{ if regexMatch \"(^10|22):\" (.CurrentDate | date .Format) }}\ue38b {{ end }}{{ if regexMatch \"(^11|23):\" (.CurrentDate | date .Format) }}\ue38c {{ end }}{{ .CurrentDate | date .Format }}",
+          "templates_logic": "first_match"
+        }
+      ]
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "type": "prompt",
+      "segments": [
+        {
+          "foreground": "#0077c2",
+          "style": "plain",
+          "template": "\u2570\u2500",
+          "type": "text"
+        },
+        {
+          "style": "plain",
           "foreground_templates": [
-            "{{ if gt .Code 0 }}#ef5350{{ else }}#50ef53{{ end }}"
+            "{{ if eq \"False\" (title (default \"False\" .Env.ENABLE_ARROW_DIVIDER_COLOR_EXECUTION_RETURN)) }}p:c-badge-white{{ else }}{{ if eq .Code 0 }}p:c-badge-return-success{{ else if or (eq .Code 1) (eq .Code 130) }}p:c-badge-return-fail-term{{ else }}p:c-badge-return-custom{{ end }}{{ end }}"
+          ],
+          "template": "$",
+          "type": "text"
+        },
+        {
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}p:c-badge-return-fail-term{{ else }}p:c-badge-return-success{{ end }}"
           ],
           "properties": {
             "always_enabled": true
@@ -147,16 +231,16 @@
           "style": "plain",
           "template": " {{ if gt .Code 0 }}\uf00d{{ else }}\uf42e{{ end }} ",
           "type": "exit"
-        },
-        {
-          "type": "text",
-          "foreground": "#ffffff",
-          "style": "plain",
-          "template": "$"
         }
-      ],
-      "type": "prompt"
+      ]
     }
   ],
-  "console_title_template": "{{ .Folder }}"
+  "transient_prompt": {
+    "template": "{{ if eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_TRANSIENT)) }}<{{ if eq .Code 0 }}p:c-badge-return-success{{ else if or (eq .Code 1) (eq .Code 130) }}p:c-badge-return-fail-term{{ else }}p:c-badge-return-custom{{ end }}>\uE0B6</><p:c-badge-text,{{ if eq .Code 0 }}p:c-badge-return-success{{ else if or (eq .Code 1) (eq .Code 130) }}p:c-badge-return-fail-term{{ else }}p:c-badge-return-custom{{ end }}>\uF55D \uE0B1 {{ if .Segments.Executiontime.Ms }}{{ if eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_TRANSIENT_EXEC_TIME)) }}\uFA1E {{ .Segments.Executiontime.FormattedMs }} \uE621 {{ end }}{{ end }}<b>{{ if eq .Code 0 }}OK{{ else if eq .Code 1 }}FAIL{{ else if eq .Code 130 }}TERM{{ else }}Code{{ end }} ({{ .Code }})</b></><{{ if eq .Code 0 }}p:c-badge-return-success{{ else if or (eq .Code 1) (eq .Code 130) }}p:c-badge-return-fail-term{{ else }}p:c-badge-return-custom{{ end }}>\uE0B4</> {{ end }}\u276F "
+  },
+  "secondary_prompt": {
+    "background": "transparent",
+    "foreground": "p:c-secondary-ellipsis",
+    "template": " ... "
+  }
 }
