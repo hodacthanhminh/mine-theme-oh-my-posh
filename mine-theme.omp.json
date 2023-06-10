@@ -78,7 +78,7 @@
           "foreground": "p:c-badge-text",
           "leading_diamond": "\ue0b2",
           "style": "diamond",
-          "template": " \uf85a CPU: {{ round .PhysicalPercentUsed .Precision }}% | ",
+          "template": " \udb80\udf5b CPU: {{ round .PhysicalPercentUsed .Precision }}% | ",
           "type": "sysinfo"
         },
         {
@@ -134,7 +134,7 @@
           "properties": {
             "folder_icon": "\uf07b",
             "folder_separator_template": "<#93d0ff> \u00bb </>",
-            "home_icon": "\uf7db",
+            "home_icon": "\uf015",
             "style": "agnoster"
           },
           "style": "plain",
